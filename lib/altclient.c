@@ -39,10 +39,20 @@ altclient_t * altclient_new(const char * domain)
 
     curl_share_setopt(cli->curl_shared, CURLSHOPT_USERDATA, api);
 
-
-
-
     return api;
 }
 
+void altclient_destructor(void * cli_p)
+{
+    altclient_t * cli = (altclient_t *)cli_p;
+    if(cli)
+    {
+        if(cli->parent)
+        {
+            free(cli->parent);
+            cli->parent = NULL;
+        }
+        free(cli);
+    }
+}
 

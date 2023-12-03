@@ -25,7 +25,7 @@ struct _altclient_t
 };
 
 altclient_t * altclient_new(const char * domain);
-
+void altclient_destructor(void * cli_p);
 
 #ifdef __cplusplus
 }
