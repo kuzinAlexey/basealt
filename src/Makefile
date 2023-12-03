@@ -19,7 +19,8 @@ INCPATH	=	-I./ -I../lib
 LINK	=	g++
 LFLAGS	=	-O2
 LIBS	=	-lm -lrt -lpthread \
-		-L../build -laltclient
+			-ljson-c \
+			-L../build -laltclient
 
 TAR	=	tar -cf
 GZIP	=	gzip -9f
@@ -28,15 +29,17 @@ DIST 	=	basealt_mgr
 
 ####### IVA files
 
-HEADERS =	
+HEADERS =	repo.h
 		
-SOURCES =	main.c
+SOURCES =	main.c \
+			repo.c
 
 BUILD_DIR	=	build
 OBJECT_DIR	=	$(BUILD_DIR)/obj
 TARGET_DIR	=	../build
 
-OBJECTS =	$(OBJECT_DIR)/main.o 
+OBJECTS =	$(OBJECT_DIR)/main.o  \
+			$(OBJECT_DIR)/repo.o
 
 TARGET	=	basealt_mgr
 
@@ -95,7 +98,9 @@ uninstall:
 	
 	
 ####### Compile
-$(OBJECT_DIR)/main.o: main.c
+$(OBJECT_DIR)/main.o: main.c repo.h
+$(OBJECT_DIR)/repo.o: repo.c repo.h
+
 
 ####### Implicit rules
 $(OBJECT_DIR)/%.o: %.cpp
