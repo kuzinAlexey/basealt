@@ -9,6 +9,12 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "arch.h"
+
+struct _alt_repo_t
+{
+
+};
 
 #ifdef __cplusplus
 }

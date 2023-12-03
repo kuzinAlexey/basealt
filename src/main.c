@@ -8,6 +8,8 @@
 #include <json-c/json.h>
 
 #include "altclient.h"
+#include "repo.h"
+
 
 void print_usage();
 
@@ -15,6 +17,7 @@ char * progname = NULL;
 
 int main(int argc, char ** argv) 
 {
+    int i, j;
     int rc = 0;
     altclient_t * cli = NULL;
     char * resp = NULL;
@@ -54,7 +57,49 @@ int main(int argc, char ** argv)
         exit(EXIT_FAILURE);
     }
 
-    fprintf(stdout, "LOad packet\n %s \n", resp);
+    // 
+    alt_arch_t * arch_1 = alt_arch_new();
+    struct json_tokener * tokener = json_tokener_new();
+    assert(tokener);
+
+    struct json_object * json = json_tokener_parse_ex(tokener, resp, strlen(resp));
+
+    enum json_tokener_error jerr = json_tokener_get_error( tokener );
+    if (jerr == json_tokener_success) 
+    {
+        struct json_object * packages_list;
+        if(json_object_object_get_ex(json, "packages", &packages_list))
+        {
+            int arraylen = json_object_array_length( packages_list );
+
+            for(i = 0; i < arraylen; i++) 
+            {
+                struct json_object * array_obj = json_object_array_get_idx( packages_list, i );
+                struct json_object * array_obj_name = json_object_object_get(array_obj, "name");
+                struct json_object * array_obj_arch = json_object_object_get(array_obj, "arch");
+                struct json_object * array_obj_version = json_object_object_get(array_obj, "version");
+                struct json_object * array_obj_release = json_object_object_get(array_obj, "release");
+                /*fprintf(stdout, "%s\t%s\t%s\t%s \n", 
+                    json_object_get_string( array_obj_name ),
+                    json_object_get_string( array_obj_arch ),
+                    json_object_get_string( array_obj_version ),
+                    json_object_get_string( array_obj_release ) );
+                    */
+
+                rc = alt_arch_add(arch_1, json_object_get_string( array_obj_name ), alt_arch_i586);
+                if(rc < 0)
+                {
+                    fprintf(stderr, "Error alt_arch_add() %d \n", rc);
+                }
+                
+            }
+
+            fprintf(stdout, "List size %d \n", arraylen);
+            fprintf(stdout, "Arch size %d \n", arch_1->cnt);
+        }
+
+    }
+
 //----------------------------------------------------------------------
 
 

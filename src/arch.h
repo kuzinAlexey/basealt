@@ -37,13 +37,12 @@ typedef struct _alt_arch_t
     int id;                         ///< Идентификатор архитектуры
     int limit;                      ///< Выделенное количество корзин
     int cnt;                        ///< Количество пакетов
-    uint32_t count;                 ///< Текущий размер таблицы
     alt_pack_t ** packs;            ///< Массив элементов таблицы
 }alt_arch_t;
 
 alt_arch_t * alt_arch_new();
 void alt_arch_destructor(void * arch_p);
-
+alt_pack_t * alt_arch_find(alt_arch_t * arch, const char * key);
 int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag);
 
 #ifdef __cplusplus

@@ -1,5 +1,6 @@
 #include "arch.h"
 
+#include <stdio.h>
 #include <string.h>
 
 const char * alt_arch_str[] =
@@ -107,7 +108,7 @@ int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag)
     if(arch->cnt >= arch->limit)
     {
         // увеличиваем на 20%
-        uint32_t new_limit = arch->limit * 1.2;
+        uint32_t new_limit = (double)arch->limit * 1.2;
         alt_pack_t ** new_packs = (alt_pack_t **)calloc(1, sizeof(alt_pack_t *) * new_limit);
         if(!new_packs)
         {
@@ -130,6 +131,8 @@ int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag)
         free(arch->packs);
         arch->packs = new_packs;
         arch->limit = new_limit;
+
+        fprintf(stdout, "Resize arch table %d \n", arch->limit);
     }
 
     // вставляем данные в таблицу
@@ -140,7 +143,7 @@ int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag)
     alt_pack_t * prev_pack = NULL;
     while(pack)
     {
-        if(!strcmp(pack->key, key))
+        if(strcmp(pack->key, key) == 0)
         {
             if(prev_pack)
             {
