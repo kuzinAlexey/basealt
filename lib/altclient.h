@@ -18,14 +18,16 @@ typedef struct _altclient_t altclient_t;
 
 struct _altclient_t
 {
-    char * parent;
-    
-    CURLSH * curl;
-    pthread_mutex_t curl_lock;
+    char * parent;      ///< full domain api
 };
 
 altclient_t * altclient_new(const char * domain);
 void altclient_destructor(void * cli_p);
+
+/**
+ * 
+*/
+int altclient_get_branch_binary_packages(altclient_t * cli, const char * branch, char ** response);
 
 #ifdef __cplusplus
 }
