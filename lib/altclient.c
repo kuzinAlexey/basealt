@@ -63,10 +63,10 @@ static size_t altclient_recv_package_callback(void * contents, size_t size, size
         return 0;
     }
 
-    memcpy(&(iov->iov_base[iov->iov_len]), contents, realsize);
+    memcpy((iov->iov_base + iov->iov_len), contents, realsize);
 
     iov->iov_len += realsize;
-    iov->iov_base[iov->iov_len] = 0;
+    *((char*)iov->iov_base + iov->iov_len) = 0;
 
     return realsize;
 }
