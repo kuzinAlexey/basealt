@@ -4,6 +4,7 @@
 #############################################################################
 
 ####### Environment variables used for installation process
+PRONAME = altclient
 DESTDIR = 
 INSTALLROOT = usr/local
 INSTALLDIR = $(DESTDIR)/$(INSTALLROOT)
@@ -37,7 +38,7 @@ OBJECT_DIR	=	$(BUILD_DIR)/obj
 TARGET_DIR	=	../build
 
 
-HEADERS =	altclient_qzm_global.h \
+HEADERS =	altclient_global.h \
 		altclient.h
 		
 SOURCES =	altclient.c
@@ -72,27 +73,15 @@ clean:
 doc:
 	doxygen Doxyfile
 
-#install: $(TARGET)
-#	install -d $(INSTALLDIR)/bin
-#	install -s -m 0755 $(TARGET) $(INSTALLDIR)/bin
-#	install -d $(INSTALLDIR)/etc
-#	install -m 0644 $(CONFIG) $(INSTALLDIR)/etc
 
-install_targets: $(TARGET) $(CONFIG)
-	install -d $(INSTALLDIR)/bin
-	install -s -m 0755 $(TARGET_DIR)/$(TARGET) $(INSTALLDIR)/bin
-	install -d $(INSTALLDIR)/etc
-	install -m 0644 $(CONFIG) $(INSTALLDIR)/etc
+install_target: $(TARGET)
+	install -d $(INSTALLDIR)/lib
+	install -s -m 0755 $(TARGET_DIR)/$(TARGET) $(INSTALLDIR)/lib
+	install -d $(INSTALLDIR)/include/$(PRONAME)
+	install -m 0644 $(HEADERS) $(INSTALLDIR)/include/$(PRONAME)
 	
-install_configs:
-
-#install_configs: $(CONFIGS) $(TARGET).md5sum
-#	install -d $(INSTALLDIR)/etc
-#	install -m 0644 $(CONFIGS) $(INSTALLDIR)/etc
-#	for cfg in $(CONFIGS); do sed -i "/md5/c\md5 `cat $(TARGET).md5sum`" $(INSTALLDIR)/etc/$$cfg; done
-
-install: install_targets install_configs
-	install -m 0755 $(SCRIPTS) /etc/init.d
+install: install_target
+	-ldconfig
 
 uninstall:
 	rm -f $(INSTALLDIR)/bin/$(TARGET)
