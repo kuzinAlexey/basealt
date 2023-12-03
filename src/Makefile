@@ -29,16 +29,19 @@ DIST 	=	basealt_mgr
 
 ####### IVA files
 
-HEADERS =	repo.h
+HEADERS =	arch.h \
+			repo.h
 		
-SOURCES =	main.c \
+SOURCES =	arch.c \
+			main.c \
 			repo.c
 
 BUILD_DIR	=	build
 OBJECT_DIR	=	$(BUILD_DIR)/obj
 TARGET_DIR	=	../build
 
-OBJECTS =	$(OBJECT_DIR)/main.o  \
+OBJECTS =	$(OBJECT_DIR)/arch.o \
+			$(OBJECT_DIR)/main.o \
 			$(OBJECT_DIR)/repo.o
 
 TARGET	=	basealt_mgr
@@ -99,8 +102,8 @@ uninstall:
 	
 ####### Compile
 $(OBJECT_DIR)/main.o: main.c repo.h
-$(OBJECT_DIR)/repo.o: repo.c repo.h
-
+$(OBJECT_DIR)/repo.o: repo.c repo.h arch.h
+$(OBJECT_DIR)/arch.o: arch.c arch.h
 
 ####### Implicit rules
 $(OBJECT_DIR)/%.o: %.cpp
