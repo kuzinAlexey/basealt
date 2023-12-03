@@ -103,6 +103,9 @@ int altclient_get_branch_binary_packages(altclient_t * cli, const char * branch,
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&iov);
 
     res = curl_easy_perform(curl);
+
+    *response = (char*)iov.iov_base;
+
     if(res != CURLE_OK)
     {
         if(iov.iov_base && iov.iov_len)
