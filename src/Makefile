@@ -18,7 +18,8 @@ CXXFLAGS=	-O2 -static -g
 INCPATH	=	-I./ -I../lib
 LINK	=	g++
 LFLAGS	=	-O2
-LIBS	=	-L./ -lm -lrt -lpthread -laltclient
+LIBS	=	-lm -lrt -lpthread \
+		-L../build -laltclient
 
 TAR	=	tar -cf
 GZIP	=	gzip -9f
