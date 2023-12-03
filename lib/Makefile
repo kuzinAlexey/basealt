@@ -1,6 +1,6 @@
 #############################################################################
-# Makefile for building basealt
-#     Project: 
+# Makefile for building lib
+#     Project: basealt
 #############################################################################
 
 ####### Environment variables used for installation process
@@ -11,37 +11,40 @@ INSTALLDIR = $(DESTDIR)/$(INSTALLROOT)
 
 ####### Compiler, tools and options
 
-CC	=	g++
-CXX	=	g++
-CFLAGS	=	-O2 -static -g
-CXXFLAGS=	-O2 -static -g
+DEFINES       = -DDEBUG -DALTCLIENT_LIBRARY
+
+CC	=	gcc
+CXX	=	gcc
+CFLAGS	=	-O2 -fpic -g
+CXXFLAGS=	-O2 -spic -g
 INCPATH	=	-I./
-LINK	=	g++
-LFLAGS	=	-O2
-LIBS	=	-lm -lrt -lpthread -lcurl -ljson-c
+LINK	=	gcc
+LFLAGS	=	-O2 -shared
+LIBS	=	-lpthread -lrt -lm -lcurl
+LIBDIR	=	
+
+AR	=	ar cqs
 
 TAR	=	tar -cf
 GZIP	=	gzip -9f
 
-DIST 	=	basealt_test
+DIST 	=	lib
 
 ####### IVA files
 
-HEADERS =	
-		
-SOURCES =	main.c
-
 BUILD_DIR	=	build
 OBJECT_DIR	=	$(BUILD_DIR)/obj
-TARGET_DIR	=	bin
+TARGET_DIR	=	../build
 
-OBJECTS =	$(OBJECT_DIR)/main.o 
 
-TARGET	=	basealt_test
+HEADERS =	altclient_qzm_global.h \
+		altclient.h
+		
+SOURCES =	altclient.c
 
-TARGET_SO =	'lib'$(TARGET)'.so'
+OBJECTS =	$(OBJECT_DIR)/altclient.o 
 
-TARGETS =	$(TARGET) $(TARGET_SO)
+TARGET	=	libaltclient.so
 
 ############################
 
@@ -53,10 +56,9 @@ makedir:
 	@test -d  $(BUILD_DIR) || mkdir -p $(BUILD_DIR)
 	@test -d  $(OBJECT_DIR) || mkdir -p $(OBJECT_DIR)
 	@test -d  $(TARGET_DIR) || mkdir -p $(TARGET_DIR)
-
-$(TARGET): $(OBJECTS) 
-	$(LINK) $(LFLAGS) -o $(TARGET_DIR)/$(TARGET) $(OBJECTS) $(LIBS)
 	
+$(TARGET): $(OBJECTS) 
+	$(LINK) $(LFLAGS) -o $(TARGET_DIR)/$(TARGET) $(OBJECTS) $(LIBS) $(OBJCOMP)
 
 dist:
 	$(TAR) $(DIST).tar $(SOURCES) $(HEADERS) $(INTERFACES)
@@ -64,7 +66,7 @@ dist:
 
 clean:
 	-rm -Rf $(BUILD_DIR)
-	-rm -Rf $(TARGET_DIR)
+	-rm -f $(TARGET_DIR)/$(TARGET)
 	-rm -f *~ core *.core
 
 doc:
@@ -97,9 +99,8 @@ uninstall:
 	rm -f $(INSTALLDIR)/etc/$(CONFIG)
 	rm -f /etc/init.d/$(SCRIPTS)
 	
-	
 ####### Compile
-$(OBJECT_DIR)/main.o: main.c
+$(OBJECT_DIR)/altclient.o: altclient.c altclient.h altclient_global.h
 
 ####### Implicit rules
 $(OBJECT_DIR)/%.o: %.cpp
