@@ -1,6 +1,6 @@
 #############################################################################
-# Makefile for building basealt
-#     Project: 
+# Makefile for building cli-utility
+#     Project: basealt
 #############################################################################
 
 ####### Environment variables used for installation process
@@ -15,15 +15,15 @@ CC	=	g++
 CXX	=	g++
 CFLAGS	=	-O2 -static -g
 CXXFLAGS=	-O2 -static -g
-INCPATH	=	-I./
+INCPATH	=	-I./ -I../lib
 LINK	=	g++
 LFLAGS	=	-O2
-LIBS	=	-lm -lrt -lpthread -lcurl -ljson-c
+LIBS	=	-L./ -lm -lrt -lpthread -laltclient
 
 TAR	=	tar -cf
 GZIP	=	gzip -9f
 
-DIST 	=	basealt_test
+DIST 	=	basealt_mgr
 
 ####### IVA files
 
@@ -33,15 +33,11 @@ SOURCES =	main.c
 
 BUILD_DIR	=	build
 OBJECT_DIR	=	$(BUILD_DIR)/obj
-TARGET_DIR	=	bin
+TARGET_DIR	=	../build
 
 OBJECTS =	$(OBJECT_DIR)/main.o 
 
-TARGET	=	basealt_test
-
-TARGET_SO =	'lib'$(TARGET)'.so'
-
-TARGETS =	$(TARGET) $(TARGET_SO)
+TARGET	=	basealt_mgr
 
 ############################
 
@@ -57,14 +53,13 @@ makedir:
 $(TARGET): $(OBJECTS) 
 	$(LINK) $(LFLAGS) -o $(TARGET_DIR)/$(TARGET) $(OBJECTS) $(LIBS)
 	
-
 dist:
 	$(TAR) $(DIST).tar $(SOURCES) $(HEADERS) $(INTERFACES)
 	$(GZIP) $(DIST).tar
 
 clean:
 	-rm -Rf $(BUILD_DIR)
-	-rm -Rf $(TARGET_DIR)
+	-rm -f $(TARGET_DIR)/$(TARGET)
 	-rm -f *~ core *.core
 
 doc:
