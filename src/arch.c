@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define NUM_ARCHS   8
 const char * alt_arch_str[NUM_ARCHS] =
 {
     "noarch", 

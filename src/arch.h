@@ -9,6 +9,7 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
+#define NUM_ARCHS   8
 
 typedef enum _alt_arch_id
 {
