@@ -39,6 +39,10 @@ typedef struct _alt_arch_t
     int limit;                      ///< Выделенное количество корзин
     int cnt;                        ///< Количество пакетов
     alt_pack_t ** packs;            ///< Массив элементов таблицы
+
+    uint32_t cur_hash;          ///< Текущий хэш для итератора
+    alt_pack_t * cur_pack;      ///< Текущий пакет
+
 }alt_arch_t;
 
 alt_arch_t * alt_arch_new();
@@ -46,6 +50,10 @@ void alt_arch_destructor(void * arch_p);
 alt_pack_t * alt_arch_find(alt_arch_t * arch, const char * key);
 int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag);
 int alt_arch_tag(const char * arch_str);
+
+alt_pack_t * alt_arch_first(alt_arch_t * arch);
+alt_arch_t * alt_arch_next(alt_arch_t * arch);
+
 
 #ifdef __cplusplus
 }

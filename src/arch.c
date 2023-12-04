@@ -38,6 +38,8 @@ alt_arch_t * alt_arch_new()
         return NULL;
     }
 
+    arch->current = NULL;
+
     return arch;
 }
 
@@ -186,7 +188,51 @@ int alt_arch_tag(const char * arch_str)
     return -1;
 }
 
+alt_pack_t * alt_arch_first(alt_arch_t * arch)
+{
+    if(!arch)
+    {
+        return NULL;
+    }
+    arch->cur_hash = 0;
+    arch->cur_pack = arch->packs[arch->cur_hash];
+    return alt_arch_next(arch);
+}
 
+
+alt_arch_t * alt_arch_next(alt_arch_t * arch)
+{
+    if(!arch)
+    {
+        return NULL;
+    }
+
+    while(arch->cur_pack == NULL)
+    {
+        if(arch->cur_hash < (arch->limit - 1))
+        {
+            arch->cur_hash++;
+        }
+        else
+        {
+            return NULL;
+        }
+
+        arch->cur_pack = arch->packs[arch->cur_hash];
+    }
+
+    if(!arch->cur_pack)
+    {
+        return NULL;
+    }
+
+    alt_arch_t * next_pack = arch->cur_pack->next;
+    alt_arch_t * ret_pack = arch->cur_pack;
+   
+    arch->cur_pack = next_pack;
+
+    return ret_pack;
+}
 
 
 // support funcs
