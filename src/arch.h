@@ -44,6 +44,7 @@ alt_arch_t * alt_arch_new();
 void alt_arch_destructor(void * arch_p);
 alt_pack_t * alt_arch_find(alt_arch_t * arch, const char * key);
 int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag);
+int alt_arch_tag(const char * arch_str);
 
 #ifdef __cplusplus
 }

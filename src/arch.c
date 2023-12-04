@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 
-const char * alt_arch_str[] =
+#define NUM_ARCHS   8
+const char * alt_arch_str[NUM_ARCHS] =
 {
     "noarch", 
     "i586", 
@@ -173,8 +174,23 @@ int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag)
     return arch->cnt;
 }
 
+int alt_arch_tag(const char * arch_str)
+{
+    int i;
+    for(i = 0; i < NUM_ARCHS; i++)
+    {
+        if(strcmp(arch_str, alt_arch_str[i]) == 0)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
 
 
+
+
+// support funcs
 static uint32_t alt_arch_hash(const char * key, uint32_t limit)
 {
     uint32_t key_hash = 0;
