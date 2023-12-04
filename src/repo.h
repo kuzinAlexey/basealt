@@ -11,10 +11,15 @@ extern "C" {
 
 #include "arch.h"
 
-struct _alt_repo_t
+typedef struct _alt_repo_t
 {
+    int cnt;                ///< Количество архитектур
+    alt_arch_t ** archs;    ///< Список архитектур
+}alt_repo_t;
 
-};
+alt_repo_t * alt_repo_new();
+void alt_repo_destructor(void * repo_p);
+
 
 #ifdef __cplusplus
 }
