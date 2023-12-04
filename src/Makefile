@@ -72,33 +72,12 @@ clean:
 doc:
 	doxygen Doxyfile
 
-#install: $(TARGET)
-#	install -d $(INSTALLDIR)/bin
-#	install -s -m 0755 $(TARGET) $(INSTALLDIR)/bin
-#	install -d $(INSTALLDIR)/etc
-#	install -m 0644 $(CONFIG) $(INSTALLDIR)/etc
-
-install_targets: $(TARGET) $(CONFIG)
+install:
 	install -d $(INSTALLDIR)/bin
 	install -s -m 0755 $(TARGET_DIR)/$(TARGET) $(INSTALLDIR)/bin
-	install -d $(INSTALLDIR)/etc
-	install -m 0644 $(CONFIG) $(INSTALLDIR)/etc
-	
-install_configs:
-
-#install_configs: $(CONFIGS) $(TARGET).md5sum
-#	install -d $(INSTALLDIR)/etc
-#	install -m 0644 $(CONFIGS) $(INSTALLDIR)/etc
-#	for cfg in $(CONFIGS); do sed -i "/md5/c\md5 `cat $(TARGET).md5sum`" $(INSTALLDIR)/etc/$$cfg; done
-
-install: install_targets install_configs
-	install -m 0755 $(SCRIPTS) /etc/init.d
 
 uninstall:
-	rm -f $(INSTALLDIR)/bin/$(TARGET)
-	rm -f $(INSTALLDIR)/etc/$(CONFIG)
-	rm -f /etc/init.d/$(SCRIPTS)
-	
+	rm -f $(INSTALLDIR)/bin/$(TARGET)	
 	
 ####### Compile
 $(OBJECT_DIR)/main.o: main.c repo.h
