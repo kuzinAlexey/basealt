@@ -28,15 +28,15 @@ alt_arch_t * alt_arch_new()
         return NULL;
     }
 
-    arch->limit = 255;  // начальное значение корзин
+    arch->limit = 255;  // начальный размер хэш
+    arch->cnt = 0;
+
     arch->packs = (alt_pack_t **)calloc(1, sizeof(alt_pack_t *) * arch->limit);
     if(!arch->packs)
     {
         alt_arch_destructor(arch);
         return NULL;
     }
-
-    arch->cnt = 0;
 
     return arch;
 }
@@ -103,16 +103,51 @@ int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag)
     }
 
     int i;
+/*
+    // Удаляем пакет, с таким же ключем если есть
+    alt_pack_t * pack = arch->packs[ pack_hash ];
+    alt_pack_t * prev_pack = NULL;
+    while(pack)
+    {
+        if(strcmp(pack->key, key) == 0)
+        {
+            if(prev_pack)
+            {
+                prev_pack->next = pack->next;
+            }
+            free(pack->key);
+            free(pack);
+            pack = NULL;
+            break;
+        }
+        prev_pack = pack;
+        fprintf(stdout, "tut %ld \n", pack);
+        pack = pack->next;
+    }
+*/
+    // добавляем пакет в таблицу
+    alt_pack_t * new_pack = (alt_pack_t*)calloc(1, sizeof(alt_pack_t));
+    if(!new_pack)
+    {
+        return -2;
+    }
+
+    new_pack->key = strdup(key);
+    new_pack->hash = alt_arch_hash(key, arch->limit);
+    new_pack->arch_id = tag;
+    new_pack->next = arch->packs[ new_pack->hash ];
+    arch->packs[new_pack->hash] = new_pack;
+    arch->cnt++;
 
     // увеличиваем хэш таблицу, если она наполнилась
-    if(arch->cnt >= arch->limit)
+    if(arch->cnt >= arch->limit * 0.75)
     {
         // увеличиваем на 20%
         uint32_t new_limit = (double)arch->limit * 1.2;
         alt_pack_t ** new_packs = (alt_pack_t **)calloc(1, sizeof(alt_pack_t *) * new_limit);
         if(!new_packs)
         {
-            return -2;
+            return -3;
         }
 
         for(i = 0; i < arch->limit; i++)
@@ -134,42 +169,6 @@ int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag)
 
         fprintf(stdout, "Resize arch table %d \n", arch->limit);
     }
-
-    // вставляем данные в таблицу
-    int pack_hash = alt_arch_hash(key, arch->limit);
-    alt_pack_t * pack = arch->packs[ pack_hash ];
-
-    // Удаляем пакет, с таким же ключем если есть
-    alt_pack_t * prev_pack = NULL;
-    while(pack)
-    {
-        if(strcmp(pack->key, key) == 0)
-        {
-            if(prev_pack)
-            {
-                prev_pack->next = pack->next;
-            }
-            free(pack->key);
-            free(pack);
-            break;
-        }
-        prev_pack = pack;
-        pack = pack->next;
-    }
-
-    // добавляем пакет в таблицу
-    alt_pack_t * new_pack = (alt_pack_t*)calloc(1, sizeof(alt_pack_t));
-    if(!new_pack)
-    {
-        return -3;
-    }
-
-    new_pack->key = strdup(key);
-    new_pack->hash = pack_hash;
-    new_pack->arch_id = tag;
-    new_pack->next = arch->packs[ pack_hash ];
-    arch->packs[pack_hash] = new_pack;
-    arch->cnt++;
 
     return arch->cnt;
 }
