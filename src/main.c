@@ -150,7 +150,7 @@ int main(int argc, char ** argv)
     json_object_object_add(output, repo_name_1, only_repo_1);
     json_object_object_add(output, repo_name_2, only_repo_2);
 
-    FILE * outfile = fopen("output.json", "w");
+    FILE * outfile = fopen("/tmp/output.json", "w");
     if(outfile)
     {
         fprintf(outfile, "\n%s\n", json_object_to_json_string(output));
