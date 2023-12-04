@@ -50,9 +50,9 @@ void alt_arch_destructor(void * arch_p);
 alt_pack_t * alt_arch_find(alt_arch_t * arch, const char * key);
 int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag);
 int alt_arch_tag(const char * arch_str);
-
+const char * alt_arch_string(alt_arch_id tag);
 alt_pack_t * alt_arch_first(alt_arch_t * arch);
-alt_arch_t * alt_arch_next(alt_arch_t * arch);
+alt_pack_t * alt_arch_next(alt_arch_t * arch);
 
 
 #ifdef __cplusplus

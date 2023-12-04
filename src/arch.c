@@ -38,7 +38,8 @@ alt_arch_t * alt_arch_new()
         return NULL;
     }
 
-    arch->current = NULL;
+    arch->cur_hash = 0;
+    arch->cur_pack = NULL;
 
     return arch;
 }
@@ -188,6 +189,12 @@ int alt_arch_tag(const char * arch_str)
     return -1;
 }
 
+const char * alt_arch_string(alt_arch_id tag)
+{
+    return alt_arch_str[tag];
+}
+
+
 alt_pack_t * alt_arch_first(alt_arch_t * arch)
 {
     if(!arch)
@@ -200,7 +207,7 @@ alt_pack_t * alt_arch_first(alt_arch_t * arch)
 }
 
 
-alt_arch_t * alt_arch_next(alt_arch_t * arch)
+alt_pack_t * alt_arch_next(alt_arch_t * arch)
 {
     if(!arch)
     {
@@ -226,8 +233,8 @@ alt_arch_t * alt_arch_next(alt_arch_t * arch)
         return NULL;
     }
 
-    alt_arch_t * next_pack = arch->cur_pack->next;
-    alt_arch_t * ret_pack = arch->cur_pack;
+    alt_pack_t * next_pack = arch->cur_pack->next;
+    alt_pack_t * ret_pack = arch->cur_pack;
    
     arch->cur_pack = next_pack;
 
