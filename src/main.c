@@ -45,9 +45,12 @@ int main(int argc, char ** argv)
 //----------------------------------------------------------------------
 //  Load packages by repo 1
 //----------------------------------------------------------------------
-    fprintf(stdout, "Load a list of packages for the repository %s \n",
+    alt_repo_t * repo_1 = alt_repo_new();
+    assert(repo_1);
+
+    fprintf(stdout, "Loading a list of packages by the repository %s \n",
             repo_name_1);
-    rc = altclient_get_branch_binary_packages(cli, repo_name_1 /*"sisyphus"*/, &resp);
+    rc = altclient_get_branch_binary_packages(cli, repo_name_1, &resp);
     if(rc < 0)
     {
         fprintf(stderr, "Error load packages list %d \n", rc);
@@ -56,61 +59,46 @@ int main(int argc, char ** argv)
         exit(EXIT_FAILURE);
     }
 
-    alt_repo_t * repo_1 = alt_repo_new();
-    assert(repo_1);
     rc = alt_repo_load(repo_1, resp);
     if(rc < 0)
     {
         fprintf(stderr, "Error parse response %d \n", rc);
         exit(EXIT_FAILURE);
     }
-    
-    // 
-    alt_arch_t * arch_1 = alt_arch_new();
-    struct json_tokener * tokener = json_tokener_new();
-    assert(tokener);
 
-    struct json_object * json = json_tokener_parse_ex(tokener, resp, strlen(resp));
-
-    enum json_tokener_error jerr = json_tokener_get_error( tokener );
-    if (jerr == json_tokener_success) 
-    {
-        struct json_object * packages_list;
-        if(json_object_object_get_ex(json, "packages", &packages_list))
-        {
-            int arraylen = json_object_array_length( packages_list );
-
-            for(i = 0; i < arraylen; i++) 
-            {
-                struct json_object * array_obj = json_object_array_get_idx( packages_list, i );
-                struct json_object * array_obj_name = json_object_object_get(array_obj, "name");
-                struct json_object * array_obj_arch = json_object_object_get(array_obj, "arch");
-                struct json_object * array_obj_version = json_object_object_get(array_obj, "version");
-                struct json_object * array_obj_release = json_object_object_get(array_obj, "release");
-                /*fprintf(stdout, "%s\t%s\t%s\t%s \n", 
-                    json_object_get_string( array_obj_name ),
-                    json_object_get_string( array_obj_arch ),
-                    json_object_get_string( array_obj_version ),
-                    json_object_get_string( array_obj_release ) );
-                    */
-
-                rc = alt_arch_add(arch_1, json_object_get_string( array_obj_name ), alt_arch_i586);
-                if(rc < 0)
-                {
-                    fprintf(stderr, "Error alt_arch_add() %d \n", rc);
-                }
-                
-            }
-
-            fprintf(stdout, "List size %d \n", arraylen);
-            fprintf(stdout, "Arch size %d \n", arch_1->cnt);
-        }
-
-    }
+    fprintf(stdout, "Loaded %d packets by %s \n", 
+            rc, repo_name_1);
 
 //----------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+//  Load packages by repo 2
+//----------------------------------------------------------------------
+    alt_repo_t * repo_2 = alt_repo_new();
+    assert(repo_2);
+    
+    fprintf(stdout, "Loading a list of packages by the repository %s \n",
+            repo_name_1);
+    rc = altclient_get_branch_binary_packages(cli, repo_name_2, &resp);
+    if(rc < 0)
+    {
+        fprintf(stderr, "Error load packages list %d \n", rc);
+        altclient_destructor(cli);
+        cli = NULL;
+        exit(EXIT_FAILURE);
+    }
 
+    rc = alt_repo_load(repo_2, resp);
+    if(rc < 0)
+    {
+        fprintf(stderr, "Error parse response %d \n", rc);
+        exit(EXIT_FAILURE);
+    }
+
+    fprintf(stdout, "Loaded %d packets by %s \n", 
+            rc, repo_name_2);
+
+//----------------------------------------------------------------------
 
     altclient_destructor(cli);
     cli = NULL;

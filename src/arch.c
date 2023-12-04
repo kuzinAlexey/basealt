@@ -167,7 +167,7 @@ int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag)
         arch->packs = new_packs;
         arch->limit = new_limit;
 
-        fprintf(stdout, "Resize arch table %d \n", arch->limit);
+        //fprintf(stdout, "Resize arch table %d \n", arch->limit);
     }
 
     return arch->cnt;

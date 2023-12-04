@@ -1,5 +1,6 @@
 #include "repo.h"
 
+#include <string.h>
 
 
 alt_repo_t * alt_repo_new()
@@ -90,7 +91,7 @@ int alt_repo_load(alt_repo_t * repo, const char * msg)
                 const char * key = json_object_get_string( array_obj_name );
                 if(arch_tag >= 0)
                 {
-                    alt_arch_add(repo->archs[ arch_tag ], key, arch_tag);
+                    alt_arch_add(repo->archs[ arch_tag ], key, (alt_arch_id)arch_tag);
                 }
 
                 /*fprintf(stdout, "%s\t%s\t%s\t%s \n", 
@@ -106,7 +107,7 @@ int alt_repo_load(alt_repo_t * repo, const char * msg)
     }
 
     json_tokener_free(tokener);
-    
+
     return rc;
 }
 
