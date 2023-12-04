@@ -5,7 +5,6 @@
 #include <errno.h>
 #include <assert.h>
 
-#include <json-c/json.h>
 
 #include "altclient.h"
 #include "repo.h"
@@ -21,8 +20,8 @@ int main(int argc, char ** argv)
     int rc = 0;
     altclient_t * cli = NULL;
     char * resp = NULL;
-    const char * repo1 = NULL;
-    const char * repo2 = NULL;
+    const char * repo_name_1 = NULL;
+    const char * repo_name_2 = NULL;
 
 //----------------------------------------------------------------------
 //  Parse args
@@ -35,8 +34,8 @@ int main(int argc, char ** argv)
         print_usage();
         exit(EXIT_FAILURE);
     }
-    repo1 = (const char *)argv[1];
-    repo2 = (const char *)argv[2];
+    repo_name_1 = (const char *)argv[1];
+    repo_name_2 = (const char *)argv[2];
 
 //----------------------------------------------------------------------
 
@@ -47,8 +46,8 @@ int main(int argc, char ** argv)
 //  Load packages by repo 1
 //----------------------------------------------------------------------
     fprintf(stdout, "Load a list of packages for the repository %s \n",
-            repo1);
-    rc = altclient_get_branch_binary_packages(cli, repo1 /*"sisyphus"*/, &resp);
+            repo_name_1);
+    rc = altclient_get_branch_binary_packages(cli, repo_name_1 /*"sisyphus"*/, &resp);
     if(rc < 0)
     {
         fprintf(stderr, "Error load packages list %d \n", rc);
@@ -57,6 +56,15 @@ int main(int argc, char ** argv)
         exit(EXIT_FAILURE);
     }
 
+    alt_repo_t * repo_1 = alt_repo_new();
+    assert(repo_1);
+    rc = alt_repo_load(repo_1, resp);
+    if(rc < 0)
+    {
+        fprintf(stderr, "Error parse response %d \n", rc);
+        exit(EXIT_FAILURE);
+    }
+    
     // 
     alt_arch_t * arch_1 = alt_arch_new();
     struct json_tokener * tokener = json_tokener_new();

@@ -9,7 +9,10 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
+#include <json-c/json.h>
+
 #include "arch.h"
+
 
 typedef struct _alt_repo_t
 {
@@ -19,6 +22,7 @@ typedef struct _alt_repo_t
 
 alt_repo_t * alt_repo_new();
 void alt_repo_destructor(void * repo_p);
+int alt_repo_load(alt_repo_t * repo, const char * msg);
 
 
 #ifdef __cplusplus
