@@ -44,6 +44,24 @@ alt_arch_t * alt_arch_new()
     return arch;
 }
 
+void alt_pack_destructor(alt_pack_t * pack)
+{
+    if(pack)
+    {
+        if(pack->key)
+        {
+            free(pack->key);
+            pack->key = NULL;
+        }
+        if(pack->ver_rel)
+        {
+            free(pack->ver_rel);
+            pack->ver_rel = NULL;
+        }
+        free(pack);
+    }
+}
+
 void alt_arch_destructor(void * arch_p)
 {
     int i;
