@@ -168,8 +168,9 @@ int main(int argc, char ** argv)
     struct json_object * output = json_object_new_object();
     assert(output);
     json_object_object_add(output, repo_name_1, only_repo_1);
-    json_object_object_add(output, version_release_name, version_rel_repo_1);
     json_object_object_add(output, repo_name_2, only_repo_2);
+    json_object_object_add(output, version_release_name, version_rel_repo_1);
+
 
     //fprintf(stdout, "\n%s\n", json_object_to_json_string(output));
     json_object_to_file("/tmp/output.json", output);
