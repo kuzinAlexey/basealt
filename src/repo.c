@@ -1,5 +1,6 @@
 #include "repo.h"
 
+#include <stdio.h>
 #include <string.h>
 
 
@@ -64,6 +65,7 @@ int alt_repo_load(alt_repo_t * repo, const char * msg)
 
     int i;
     int rc = 0;
+    char version_release[255];
 
     struct json_tokener * tokener = json_tokener_new();
     if(!tokener)
@@ -87,11 +89,17 @@ int alt_repo_load(alt_repo_t * repo, const char * msg)
                 struct json_object * array_obj_version = json_object_object_get(array_obj, "version");
                 struct json_object * array_obj_release = json_object_object_get(array_obj, "release");
 
+                sprintf(version_release, "%s-%s\0", 
+                        json_object_get_string(array_obj_version),
+                        json_object_get_string(array_obj_release));
+
+
                 int arch_tag = alt_arch_tag( json_object_get_string( array_obj_arch ) );
                 const char * key = json_object_get_string( array_obj_name );
+
                 if(arch_tag >= 0)
                 {
-                    alt_arch_add(repo->archs[ arch_tag ], key, (alt_arch_id)arch_tag);
+                    alt_arch_add(repo->archs[ arch_tag ], key, (alt_arch_id)arch_tag, version_release);
                 }
 
                 /*fprintf(stdout, "%s\t%s\t%s\t%s \n", 
