@@ -35,7 +35,7 @@ DIST 	=	lib
 
 BUILD_DIR	=	build
 OBJECT_DIR	=	$(BUILD_DIR)/obj
-TARGET_DIR	=	../build
+TARGET_DIR	=	lib
 
 
 HEADERS =	altclient_global.h \
@@ -67,7 +67,7 @@ dist:
 
 clean:
 	-rm -Rf $(BUILD_DIR)
-	-rm -f $(TARGET_DIR)/$(TARGET)
+	-rm -Rf $(TARGET_DIR)
 	-rm -f *~ core *.core
 
 doc:
