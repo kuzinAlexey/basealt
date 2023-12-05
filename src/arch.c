@@ -98,7 +98,7 @@ alt_pack_t * alt_arch_find(alt_arch_t * arch, const char * key)
     return pack;
 }
 
-int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag)
+int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag, const char * vr)
 {
     if(!arch || !key || (strlen(key) <= 0))
     {
@@ -138,6 +138,7 @@ int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag)
     new_pack->key = strdup(key);
     new_pack->hash = alt_arch_hash(key, arch->limit);
     new_pack->arch_id = tag;
+    new_pack->ver_rel = strdup( vr );
     new_pack->next = arch->packs[ new_pack->hash ];
     arch->packs[new_pack->hash] = new_pack;
     arch->cnt++;

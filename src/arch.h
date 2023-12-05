@@ -28,6 +28,8 @@ typedef struct _alt_pack_t
 {
     char * key;                     ///< Наименование пакета
     int arch_id;                    ///< Идентификатор архитектуры пакета
+    char * ver_rel;                 ///< Версия-релиз пакета
+
     uint32_t hash;                 ///< Хэш индекс пакета
     struct _alt_pack_t * next;       ///< Следующий пакет в списке коллизий по имени
 }alt_pack_t;
@@ -48,7 +50,7 @@ typedef struct _alt_arch_t
 alt_arch_t * alt_arch_new();
 void alt_arch_destructor(void * arch_p);
 alt_pack_t * alt_arch_find(alt_arch_t * arch, const char * key);
-int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag);
+int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag, const char * vr);
 int alt_arch_tag(const char * arch_str);
 const char * alt_arch_string(alt_arch_id tag);
 alt_pack_t * alt_arch_first(alt_arch_t * arch);
