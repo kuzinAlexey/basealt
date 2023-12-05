@@ -20,7 +20,7 @@ LINK	=	g++
 LFLAGS	=	-O2
 LIBS	=	-lm -lrt -lpthread \
 			-ljson-c \
-			-L../build -laltclient
+			-L../lib/lib -laltclient
 
 TAR	=	tar -cf
 GZIP	=	gzip -9f
@@ -38,7 +38,7 @@ SOURCES =	arch.c \
 
 BUILD_DIR	=	build
 OBJECT_DIR	=	$(BUILD_DIR)/obj
-TARGET_DIR	=	../build
+TARGET_DIR	=	bin
 
 OBJECTS =	$(OBJECT_DIR)/arch.o \
 			$(OBJECT_DIR)/main.o \
@@ -66,7 +66,7 @@ dist:
 
 clean:
 	-rm -Rf $(BUILD_DIR)
-	-rm -f $(TARGET_DIR)/$(TARGET)
+	-rm -Rf $(TARGET_DIR)
 	-rm -f *~ core *.core
 
 doc:
