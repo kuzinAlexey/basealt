@@ -76,14 +76,7 @@ void alt_arch_destructor(void * arch_p)
                 while(pack)
                 {
                     alt_pack_t * next_pack = pack->next;
-                    // remove packet
-                    if(pack->key)
-                    {
-                        free(pack->key);
-                        pack->key = NULL;
-                    }
-                    free(pack);
-
+                    alt_pack_destructor(pack);
                     arch->cnt--;
 
                     pack = next_pack;
