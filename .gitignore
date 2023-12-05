@@ -56,5 +56,6 @@ dkms.conf
 
 # Build directories
 build/
+*/bin/
 
 *.json
