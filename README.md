@@ -2,7 +2,7 @@
 
 This file describes the assembly and installation for the Basealt test software
 
-STEP 1: Download
+STEP 1: DOWNLOAD
 ================
 
 git clone git@github.com:kuzinAlexey/basealt.git
@@ -12,7 +12,7 @@ This will load a directory with the following subdirectories:
 lib/    contains the shared library - altclient.so
 src/    contains the source code of the program
 
-STEP 2: BUILDING A PROJECT
+STEP 2: BUILD
 ==========================
 
 To build a project, go to the project directory:
@@ -37,7 +37,7 @@ The library file will be installed at the path '/usr/local/lib'
 The executable file will be installed at the path '/usr/local/bin'
 
 
-STEP 4: PROGRAM EXECUTION
+STEP 4: EXECUTION
 =========================
 
 To run the program, run:
