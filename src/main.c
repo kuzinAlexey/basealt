@@ -22,7 +22,8 @@ int main(int argc, char ** argv)
     char * resp = NULL;
     const char * repo_name_1 = NULL;
     const char * repo_name_2 = NULL;
-
+    char * version_release_name = NULL;
+    
 //----------------------------------------------------------------------
 //  Parse args
 //----------------------------------------------------------------------
@@ -37,6 +38,11 @@ int main(int argc, char ** argv)
     repo_name_1 = (const char *)argv[1];
     repo_name_2 = (const char *)argv[2];
 
+    const char * version_release = "version-release";
+    version_release_name = (char*)calloc(1, strlen(version_release) +   
+            strlen(repo_name_1) + 2);
+    assert(version_release_name);
+    sprintf(version_release_name, "%s-%s", version_release, repo_name_1);
 //----------------------------------------------------------------------
 
     cli = altclient_new( DEFAULT_DOMAIN );     
@@ -103,6 +109,9 @@ int main(int argc, char ** argv)
 
     struct json_object * only_repo_1 = json_object_new_object();
     assert(only_repo_1);
+    struct json_object * version_rel_repo_1 = json_object_new_object();
+    assert(version_rel_repo_1);
+
     struct json_object * only_repo_2 = json_object_new_object();
     assert(only_repo_2);
 
@@ -114,6 +123,8 @@ int main(int argc, char ** argv)
         // перебор пакетов из репозитория 1
         struct json_object * only_arch_1 = json_object_new_array();
         assert(only_arch_1);
+        struct json_object * version_rel_arch_1 = json_object_new_array();
+        assert(version_rel_arch_1);
 
         pack = alt_arch_first( repo_1->archs[i] );
         while(pack)
@@ -123,9 +134,18 @@ int main(int argc, char ** argv)
             {
                 json_object_array_add(only_arch_1, json_object_new_string(pack->key));
             }
+            else    // если пакеты существуют в обеих репозитоиях
+            {
+                // если версия-релиз из первого репозитория старше
+                if( strcmp(pack->ver_rel, pack_find->ver_rel) > 0 )
+                {
+                    json_object_array_add(version_rel_arch_1, json_object_new_string(pack->key));
+                }
+            }
             pack = alt_arch_next( repo_1->archs[i] );
         }
         json_object_object_add(only_repo_1, alt_arch_string((alt_arch_id)i), only_arch_1);
+        json_object_object_add(version_rel_repo_1, alt_arch_string((alt_arch_id)i), version_rel_arch_1);
 
         // перебор пакетов из репозитория 2
         struct json_object * only_arch_2 = json_object_new_array();
@@ -148,15 +168,11 @@ int main(int argc, char ** argv)
     struct json_object * output = json_object_new_object();
     assert(output);
     json_object_object_add(output, repo_name_1, only_repo_1);
+    json_object_object_add(output, version_release_name, version_rel_repo_1);
     json_object_object_add(output, repo_name_2, only_repo_2);
 
-    FILE * outfile = fopen("/tmp/output.json", "w");
-    if(outfile)
-    {
-        fprintf(outfile, "\n%s\n", json_object_to_json_string(output));
-        fclose(outfile);
-    }
-
+    //fprintf(stdout, "\n%s\n", json_object_to_json_string(output));
+    json_object_to_file("/tmp/output.json", output);
 
     // destructors
     json_object_put(output);
@@ -165,6 +181,7 @@ int main(int argc, char ** argv)
     alt_repo_destructor(repo_2);
     altclient_destructor(cli);
     free(progname);
+    free(version_release_name);
 
     return 0;
 }
