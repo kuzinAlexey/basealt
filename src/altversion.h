@@ -14,7 +14,12 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
-
+enum alt_compare_result
+{
+    ALT_COMP_EQ = 0,        ///< Структуры равны
+    ALT_COMP_GT,            ///< Первая структура больше второй
+    ALT_COMP_LT             ///< Первая структура меньше второй
+};
 
 typedef struct _altversion_t
 {
