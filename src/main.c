@@ -137,12 +137,14 @@ int main(int argc, char ** argv)
             else    // если пакеты существуют в обеих репозитоиях
             {
                 // если версия-релиз из первого репозитория старше
-                if( strcmp(pack->ver_rel, pack_find->ver_rel) > 0 )
+                if( alt_version_compare(&pack->ver_rel, &pack_find->ver_rel) == ALT_COMP_GT )
                 {
                     json_object_array_add(version_rel_arch_1, json_object_new_string(pack->key));
                 }
 
-                fprintf(stdout, "%s\t%s\n", pack->ver_rel, pack_find->ver_rel);
+                fprintf(stdout, "%d.%d.%d-alt%d\t%d.%d.%d-alt%d\n", 
+                        pack->ver_rel.major, pack->ver_rel.minor, pack->ver_rel.patch, pack->ver_rel.release_num,
+                        pack_find->ver_rel.major, pack_find->ver_rel.minor, pack_find->ver_rel.patch, pack_find->ver_rel.release_num);
             }
             pack = alt_arch_next( repo_1->archs[i] );
         }
