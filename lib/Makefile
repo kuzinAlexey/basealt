@@ -88,9 +88,8 @@ install: install_target install_config
 	-ldconfig
 
 uninstall:
-	rm -f $(INSTALLDIR)/bin/$(TARGET)
-	rm -f $(INSTALLDIR)/etc/$(CONFIG)
-	rm -f /etc/init.d/$(SCRIPTS)
+	rm -f $(INSTALLDIR)/lib/$(TARGET)
+	rm -Rf $(INSTALLDIR)/include/$(PRONAME)
 	
 ####### Compile
 $(OBJECT_DIR)/altclient.o: altclient.c altclient.h altclient_global.h
