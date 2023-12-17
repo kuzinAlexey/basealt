@@ -22,8 +22,16 @@ cd basealt
 And execute make
 
 List of dependencies:
-- libcurl-dev (libcurl4-gnutls-dev)
-- libjson-c-dev
+- make
+- gcc
+- gcc-c++
+- libcurl-devel
+- libjson-c-devel
+
+To satisfy the dependencies, run:
+
+sudo apt-get update
+sudo apt-get install make gcc gcc-c++ libcurl-devel libjson-c-devel
 
 
 STEP 3: INSTALL
