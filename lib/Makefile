@@ -80,7 +80,11 @@ install_target: $(TARGET)
 	install -d $(INSTALLDIR)/include/$(PRONAME)
 	install -m 0644 $(HEADERS) $(INSTALLDIR)/include/$(PRONAME)
 	
-install: install_target
+install_config: 
+	install -d /etc/ld.so.conf.d
+	install -m 0644 /conf/local.conf /etc/ld.so.conf.d
+	
+install: install_target install_config
 	-ldconfig
 
 uninstall:
