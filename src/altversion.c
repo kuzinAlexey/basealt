@@ -5,6 +5,9 @@
 
 // support functions
 void parse_version(const char * version, int * major, int * minor, int * patch);
+void parse_release(const char * release, int * num);
+
+
 
 int altversion_init(altversion_t * ver)
 {
@@ -41,12 +44,11 @@ int altversion_setup(altversion_t * ver, const char * version, const char * rele
         return -2;
     }
 
-    char * token = NULL;
-
     // parse "version"
     parse_version(version, &ver->major, &ver->minor, &ver->patch);
 
     // parse "release"
+    parse_release(release, &ver->release_num);
 
 
     return 0;
@@ -63,11 +65,14 @@ int altversion_compare(altversion_t * first, altversion_t * second)
 // support functions
 void parse_version(const char * version, int * major, int * minor, int * patch)
 {
+    char * str = (char*)version;
+    char * token = NULL;
+
     *major = 0;
     *minor = 0;
     *patch = 0;
 
-    token = strtok(version, ".");   // major
+    token = strtok(str, ".");   // major
     if(token)
     {
         *major = strtol(token, NULL, 10);
@@ -97,3 +102,22 @@ void parse_version(const char * version, int * major, int * minor, int * patch)
         return;
     }
 }
+
+void parse_release(const char * release, int * num)
+{
+    char * str = (char*)release;
+
+    *num = 0;
+
+    // Поиск подстроки "alt"
+    char * altPtr = strstr(str, "alt");
+    if (altPtr == NULL) // Строка не содержит "alt"
+    {
+        return;
+    } 
+ 
+    // Извлечение числа после "alt"
+    sscanf(altPtr + 3, "%d", num); // +3 для пропуска символов "alt"
+}
+
+
