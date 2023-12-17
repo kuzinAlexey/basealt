@@ -101,8 +101,8 @@ int alt_repo_load(alt_repo_t * repo, const char * msg)
                 {
                     alt_arch_add(repo->archs[ arch_tag ], key, (alt_arch_id)arch_tag, version_release);
                 }
-
-                /*fprintf(stdout, "%s\t%s\t%s\t%s \n", 
+/*
+                fprintf(stdout, "%s\t%s\t%s\t%s \n", 
                     json_object_get_string( array_obj_name ),
                     json_object_get_string( array_obj_arch ),
                     json_object_get_string( array_obj_version ),

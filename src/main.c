@@ -141,6 +141,8 @@ int main(int argc, char ** argv)
                 {
                     json_object_array_add(version_rel_arch_1, json_object_new_string(pack->key));
                 }
+
+                fprintf(stdout, "%s\t%s\n", pack->ver_rel, pack_find->ver_rel);
             }
             pack = alt_arch_next( repo_1->archs[i] );
         }
