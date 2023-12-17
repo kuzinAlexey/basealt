@@ -53,11 +53,9 @@ void alt_pack_destructor(alt_pack_t * pack)
             free(pack->key);
             pack->key = NULL;
         }
-        if(pack->ver_rel)
-        {
-            free(pack->ver_rel);
-            pack->ver_rel = NULL;
-        }
+
+        altversion_clear(&pack->ver_rel);
+
         free(pack);
     }
 }
@@ -109,7 +107,8 @@ alt_pack_t * alt_arch_find(alt_arch_t * arch, const char * key)
     return pack;
 }
 
-int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag, const char * vr)
+int alt_arch_add(alt_arch_t * arch, const char * key, 
+        alt_arch_id tag, const char * version, const char * release)
 {
     if(!arch || !key || (strlen(key) <= 0))
     {
@@ -151,6 +150,10 @@ int alt_arch_add(alt_arch_t * arch, const char * key, alt_arch_id tag, const cha
     new_pack->arch_id = tag;
     new_pack->ver_rel = strdup( vr );
     new_pack->next = arch->packs[ new_pack->hash ];
+
+    altversion_init(&new_pack->ver_rel);
+    altversion_setup(&new_pack->ver_rel, version, release);
+
     arch->packs[new_pack->hash] = new_pack;
     arch->cnt++;
 
