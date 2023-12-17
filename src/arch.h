@@ -30,7 +30,7 @@ typedef struct _alt_pack_t
 {
     char * key;                     ///< Наименование пакета
     int arch_id;                    ///< Идентификатор архитектуры пакета
-    altversion_t ver_rel;           ///< Версия-релиз пакета
+    alt_version_t ver_rel;           ///< Версия-релиз пакета
 
     uint32_t hash;                  ///< Хэш индекс пакета
     struct _alt_pack_t * next;      ///< Следующий пакет в списке коллизий по имени
@@ -58,7 +58,6 @@ int alt_arch_tag(const char * arch_str);
 const char * alt_arch_string(alt_arch_id tag);
 alt_pack_t * alt_arch_first(alt_arch_t * arch);
 alt_pack_t * alt_arch_next(alt_arch_t * arch);
-
 
 #ifdef __cplusplus
 }

@@ -3,8 +3,8 @@
  * https://www.altlinux.org/Spec
 */
 
-#ifndef ALTVERSION_H
-#define ALTVERSION_H
+#ifndef alt_version_H
+#define alt_version_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,22 +21,22 @@ enum alt_compare_result
     ALT_COMP_LT             ///< Первая структура меньше второй
 };
 
-typedef struct _altversion_t
+typedef struct _alt_version_t
 {
     int major;              
     int minor;
     int patch;
     int release_num;
-} altversion_t;
+} alt_version_t;
 
-int altversion_init(altversion_t * ver);
-void altversion_clear(altversion_t * ver);
-int altversion_setup(altversion_t * ver, const char * version, const char * release);
-int altversion_compare(altversion_t * first, altversion_t * second);
+int alt_version_init(alt_version_t * ver);
+void alt_version_clear(alt_version_t * ver);
+int alt_version_setup(alt_version_t * ver, const char * version, const char * release);
+int alt_version_compare(alt_version_t * first, alt_version_t * second);
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // ALTVERSION_H
+#endif // alt_version_H

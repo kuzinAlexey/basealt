@@ -54,7 +54,7 @@ void alt_pack_destructor(alt_pack_t * pack)
             pack->key = NULL;
         }
 
-        altversion_clear(&pack->ver_rel);
+        alt_version_clear(&pack->ver_rel);
 
         free(pack);
     }
@@ -150,8 +150,8 @@ int alt_arch_add(alt_arch_t * arch, const char * key,
     new_pack->arch_id = tag;
     new_pack->next = arch->packs[ new_pack->hash ];
 
-    altversion_init(&new_pack->ver_rel);
-    altversion_setup(&new_pack->ver_rel, version, release);
+    alt_version_init(&new_pack->ver_rel);
+    alt_version_setup(&new_pack->ver_rel, version, release);
 
     arch->packs[new_pack->hash] = new_pack;
     arch->cnt++;
@@ -254,6 +254,7 @@ alt_pack_t * alt_arch_next(alt_arch_t * arch)
 
     return ret_pack;
 }
+
 
 
 // support funcs
