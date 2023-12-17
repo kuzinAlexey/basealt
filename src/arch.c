@@ -148,7 +148,6 @@ int alt_arch_add(alt_arch_t * arch, const char * key,
     new_pack->key = strdup(key);
     new_pack->hash = alt_arch_hash(key, arch->limit);
     new_pack->arch_id = tag;
-    new_pack->ver_rel = strdup( vr );
     new_pack->next = arch->packs[ new_pack->hash ];
 
     altversion_init(&new_pack->ver_rel);
