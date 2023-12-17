@@ -3,8 +3,8 @@
  * https://www.altlinux.org/Spec
 */
 
-#ifndef REPO_H
-#define REPO_H
+#ifndef ALTVERSION_H
+#define ALTVERSION_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -39,4 +39,4 @@ int altversion_compare(altversion_t * first, altversion_t * second);
 }
 #endif
 
-#endif // REPO_H
+#endif // ALTVERSION_H

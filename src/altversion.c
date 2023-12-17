@@ -56,9 +56,49 @@ int altversion_setup(altversion_t * ver, const char * version, const char * rele
 
 int altversion_compare(altversion_t * first, altversion_t * second)
 {
+    if(!first || !second)
+    {
+        return -1;
+    }
 
+// compare version
+    if(first->major > second->major)
+    {
+        return ALT_COMP_GT;
+    }
+    else if(first->major < second->major)
+    {
+        return ALT_COMP_LT;
+    }
+    if(first->minor > second->minor)
+    {
+        return ALT_COMP_GT;
+    }
+    else if(first->minor < second->minor)
+    {
+        return ALT_COMP_LT;
+    }
+    if(first->patch > second->patch)
+    {
+        return ALT_COMP_GT;
+    }
+    else if(first->patch < second->patch)
+    {
+        return ALT_COMP_LT;
+    }
+
+// compare release
+    if(first->release_num > second->release_num)
+    {
+        return ALT_COMP_GT;
+    }
+    else if(first->release_num < second->release_num)
+    {
+        return ALT_COMP_LT;
+    }
+
+    return ALT_COMP_EQ;
 }
-
 
 
 
