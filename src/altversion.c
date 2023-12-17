@@ -88,15 +88,18 @@ int alt_version_compare(alt_version_t * first, alt_version_t * second)
     }
 
 // compare release
-    if(first->release_num > second->release_num)
+    if(first->release_num && second->release_num)
     {
-        return ALT_COMP_GT;
+        if(first->release_num > second->release_num)
+        {
+            return ALT_COMP_GT;
+        }
+        else if(first->release_num < second->release_num)
+        {
+            return ALT_COMP_LT;
+        }
     }
-    else if(first->release_num < second->release_num)
-    {
-        return ALT_COMP_LT;
-    }
-
+    
     return ALT_COMP_EQ;
 }
 
