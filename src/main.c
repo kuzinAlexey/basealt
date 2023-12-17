@@ -142,9 +142,9 @@ int main(int argc, char ** argv)
                     json_object_array_add(version_rel_arch_1, json_object_new_string(pack->key));
                 }
 
-                fprintf(stdout, "%s: %d.%d.%d-alt%d\t%d.%d.%d-alt%d\n", pack->key,
-                        pack->ver_rel.major, pack->ver_rel.minor, pack->ver_rel.patch, pack->ver_rel.release_num,
-                        pack_find->ver_rel.major, pack_find->ver_rel.minor, pack_find->ver_rel.patch, pack_find->ver_rel.release_num);
+                //fprintf(stdout, "%s: %d.%d.%d-alt%d\t%d.%d.%d-alt%d\n", pack->key,
+                //        pack->ver_rel.major, pack->ver_rel.minor, pack->ver_rel.patch, pack->ver_rel.release_num,
+                //        pack_find->ver_rel.major, pack_find->ver_rel.minor, pack_find->ver_rel.patch, pack_find->ver_rel.release_num);
             }
             pack = alt_arch_next( repo_1->archs[i] );
         }
